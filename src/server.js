@@ -13,10 +13,29 @@ const publicDirectory = join(dirName, '../public');
 
 const server = express();
 
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 // ******** GLOBAL MIDDLEWARES ************ //
-server.use(cors());
+
+const whitelist = [
+  process.env.FRONTEND_DEV_URL,
+  process.env.FRONTEND_CLOUD_URL,
+];
+const corsOptions = {
+  origin: (origin, next) => {
+    console.log('ORIGIN ', origin);
+    // if (whiteList.includes(origin))
+    if (whitelist.indexOf(origin) !== -1) {
+      // origin allowed
+      next(null, true);
+    } else {
+      // origin not allowed
+      next(new Error('CORS PROBLEM: ORIGIN NOT SUPPORTED ' + origin));
+    }
+  },
+};
+
+server.use(cors(corsOptions));
 
 server.use(express.json());
 
