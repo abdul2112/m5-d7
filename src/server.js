@@ -14,7 +14,7 @@ const publicDirectory = join(dirName, '../public');
 
 const server = express();
 
-const port = process.env.port || 3001;
+const port = process.env.PORT;
 
 // ******** GLOBAL MIDDLEWARES ************ //
 
