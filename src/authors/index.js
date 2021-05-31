@@ -168,9 +168,9 @@ authorsRouter.put('/:id', async (req, res, next) => {
 });
 
 authorsRouter.put(
-  '/:id/lenovo',
-  parseFile.single('lenovo'),
-  uploadFile,
+  '/:id/avatar',
+  parseFile.single('daft-punk'),
+  // uploadFile,
   async (req, res, next) => {
     try {
       const fileAsBuffer = fs.readFileSync(authorsFilePath);
@@ -190,7 +190,7 @@ authorsRouter.put(
       const previousAuthorData = fileAsJSONArray[authorIndex];
       const changedAuthor = {
         ...previousAuthorData,
-        avatar: req.file,
+        avatar: req.file.path,
         updatedAt: new Date(),
         id: req.params.id,
       };
@@ -199,6 +199,7 @@ authorsRouter.put(
       res.send(changedAuthor);
     } catch (error) {
       res.status(500).send({ message: error.message });
+      // res.send(500).send({ message: error.message });
     }
   }
 );

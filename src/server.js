@@ -9,11 +9,12 @@ import { catchAllErrorHandler } from './errorHandlers.js';
 
 const fileName = fileURLToPath(import.meta.url);
 const dirName = dirname(fileName);
+console.log(dirName, '==> dirName');
 const publicDirectory = join(dirName, '../public');
 
 const server = express();
 
-const port = process.env.PORT || 3001;
+const port = process.env.port || 3001;
 
 // ******** GLOBAL MIDDLEWARES ************ //
 
@@ -30,7 +31,9 @@ const corsOptions = {
       next(null, true);
     } else {
       // origin not allowed
-      next(new Error('CORS PROBLEM: ORIGIN NOT SUPPORTED ' + origin));
+      const error = new Error('Not allowed by cors!');
+      error.status = 403;
+      next(error);
     }
   },
 };
@@ -57,7 +60,7 @@ server.use(catchAllErrorHandler);
 
 // ******** ERROR MIDDLEWARES ************ //
 
-console.table(listEndpoints(server));
+// console.table(listEndpoints(server));
 
 server.listen(port, () => {
   console.log('Server is running on port:', port);
